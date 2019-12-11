@@ -38,6 +38,8 @@ namespace Communicator_Backend
             });
 
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IFriendsService, FriendsService>();
+            services.AddTransient<IFriendshipRepository, FriendshipRepository>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddControllers();
