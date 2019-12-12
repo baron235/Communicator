@@ -14,29 +14,21 @@ namespace Communicator_Backend.Repositories
             this.context = new Context();
         }
 
-        public string ContentMessage(CommunicatorUser from_user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public CommunicatorUser FromWho(int id)
-        {
-            return this.context.CommunicatorUser.First(u => u.Id == id);
-        }
         public void AddMessage(Message m)
         {
             this.context.Message.Add(m);
             this.context.SaveChanges();
         }
 
-        public List<Message> UnreadMessagesFrom(int userId, int touserId)
+        public List<Message> UnreadMessagesFrom(string fromUser, string toUser)
         {
-            //todo
+            return this.context.Message.Where(m => m.IsRead == false && m.FromUser == fromUser && m.ToUser == toUser).ToList();
         }
 
-        void MessageRead(List<int> ids)
+        public void MessageRead(List<int> ids)
         {
-            //todo
+            this.context.Message.Where(m => ids.Contains(m.Id)).ToList().ForEach(m=>m.IsRead=true);
+            this.context.SaveChanges();
         }
     }
 }

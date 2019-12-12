@@ -15,41 +15,41 @@ namespace Communicator_Backend.Repositories
             this.context = new Context();
         }
 
-        public void AddFriendship(int id1, int id2)
+        public void AddFriendship(string login1, string login2)
         {
             var friendship = new Friendship();
-            friendship.Friend1 = id1;
-            friendship.Friend2 = id2;
+            friendship.Friend1 = login1;
+            friendship.Friend2 = login2;
             this.context.Friendship.Add(friendship);
             this.context.SaveChanges();
         }
 
-        public bool CheckFriends(int id1, int id2)
+        public bool CheckFriends(string login1, string login2)
         {
             return this.context.Friendship.Any(f => 
-            (f.Friend1 == id1 && f.Friend2 == id2) || 
-            (f.Friend1 == id2 && f.Friend2 == id1));
+            (f.Friend1 == login1 && f.Friend2 == login2) || 
+            (f.Friend1 == login2 && f.Friend2 == login1));
         }
-        public void DeleteFriendship(int id1, int id2)
+        public void DeleteFriendship(string login1, string login2)
         {
-            if(this.CheckFriends(id1, id2))
+            if(this.CheckFriends(login1, login2))
             {
                 var friendship = this.context.Friendship.First(f =>
-                    (f.Friend1 == id1 && f.Friend2 == id2) ||
-                    (f.Friend1 == id2 && f.Friend2 == id1));
+                    (f.Friend1 == login1 && f.Friend2 == login2) ||
+                    (f.Friend1 == login2 && f.Friend2 == login1));
 
                 this.context.Friendship.Remove(friendship);
                 this.context.SaveChanges();
             }
         }
 
-        public List<CommunicatorUser> GetFriends(int id)
+        public List<CommunicatorUser> GetFriends(string login)
         {
-            List<int> newF1 = this.context.Friendship.Where(p => p.Friend1 == id).Select(p => p.Friend2).ToList();
-            List<int> newF2 = this.context.Friendship.Where(p => p.Friend2 == id).Select(p => p.Friend1).ToList();
+            var newF1 = this.context.Friendship.Where(p => p.Friend1 == login).Select(p => p.Friend2).ToList();
+            var newF2 = this.context.Friendship.Where(p => p.Friend2 == login).Select(p => p.Friend1).ToList();
             newF1.AddRange(newF2);
 
-            return this.context.CommunicatorUser.Where(u => newF1.Contains(u.Id)).ToList();
+            return this.context.CommunicatorUser.Where(u => newF1.Contains(u.Login)).ToList();
         }
     }
 }

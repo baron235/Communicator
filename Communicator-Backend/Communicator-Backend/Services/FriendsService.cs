@@ -10,37 +10,29 @@ namespace Communicator_Backend.Services
     public class FriendsService : IFriendsService
     {
         private readonly IFriendshipRepository friendshipRepository;
-        private readonly IUserRepository userRepository;
 
-        public FriendsService(IFriendshipRepository friendshipRepository, IUserRepository userRepository)
+        public FriendsService(IFriendshipRepository friendshipRepository)
         {
             this.friendshipRepository = friendshipRepository;
-            this.userRepository = userRepository;
         }
 
         public void AddFriend(string login1, string login2)
         {
-            var id1 = this.userRepository.GetUser(login1).Id;
-            var id2 = this.userRepository.GetUser(login2).Id;
-
-            if (this.friendshipRepository.CheckFriends(id1, id2))
+            if (this.friendshipRepository.CheckFriends(login1, login2))
             {
                 throw new ArgumentException();
             }
             else
             {
-                this.friendshipRepository.AddFriendship(id1, id2);
+                this.friendshipRepository.AddFriendship(login1, login2);
             }
         }
 
         public void DeleteFriend(string login1, string login2)
         {
-            var id1 = this.userRepository.GetUser(login1).Id;
-            var id2 = this.userRepository.GetUser(login2).Id;
-
-            if (this.friendshipRepository.CheckFriends(id1, id2))
+            if (this.friendshipRepository.CheckFriends(login1, login2))
             {
-                this.friendshipRepository.DeleteFriendship(id1, id2);
+                this.friendshipRepository.DeleteFriendship(login1, login2);
             }
             else
             {
@@ -50,8 +42,7 @@ namespace Communicator_Backend.Services
 
         public List<UserDto> GetFriends(string login)
         {
-            var id = this.userRepository.GetUser(login).Id;
-            var users = this.friendshipRepository.GetFriends(id);
+            var users = this.friendshipRepository.GetFriends(login);
 
             return users.Select(u =>
                 new UserDto()

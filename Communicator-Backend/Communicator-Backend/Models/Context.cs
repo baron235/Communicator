@@ -18,6 +18,7 @@ namespace Communicator_Backend.Models
         public virtual DbSet<CommunicatorUser> CommunicatorUser { get; set; }
         public virtual DbSet<Friendship> Friendship { get; set; }
         public virtual DbSet<Message> Message { get; set; }
+        public virtual DbSet<UserFile> UserFile { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,20 +33,17 @@ namespace Communicator_Backend.Models
         {
             modelBuilder.Entity<CommunicatorUser>(entity =>
             {
+                entity.HasKey(e => e.Login)
+                    .HasName("PK__communic__7838F27381967C34");
+
                 entity.ToTable("communicator_user");
 
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.Avatar)
-                    .HasColumnName("avatar")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Login)
-                    .IsRequired()
                     .HasColumnName("login")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Avatar).HasColumnName("avatar");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -63,6 +61,11 @@ namespace Communicator_Backend.Models
                     .HasColumnName("status")
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.AvatarNavigation)
+                    .WithMany(p => p.CommunicatorUser)
+                    .HasForeignKey(d => d.Avatar)
+                    .HasConstraintName("FK__communica__avata__5CD6CB2B");
             });
 
             modelBuilder.Entity<Friendship>(entity =>
@@ -71,21 +74,29 @@ namespace Communicator_Backend.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.Friend1).HasColumnName("friend1");
+                entity.Property(e => e.Friend1)
+                    .IsRequired()
+                    .HasColumnName("friend1")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Friend2).HasColumnName("friend2");
+                entity.Property(e => e.Friend2)
+                    .IsRequired()
+                    .HasColumnName("friend2")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Friend1Navigation)
                     .WithMany(p => p.FriendshipFriend1Navigation)
                     .HasForeignKey(d => d.Friend1)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__friendshi__frien__32E0915F");
+                    .HasConstraintName("FK__friendshi__frien__5FB337D6");
 
                 entity.HasOne(d => d.Friend2Navigation)
                     .WithMany(p => p.FriendshipFriend2Navigation)
                     .HasForeignKey(d => d.Friend2)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__friendshi__frien__33D4B598");
+                    .HasConstraintName("FK__friendshi__frien__60A75C0F");
             });
 
             modelBuilder.Entity<Message>(entity =>
@@ -99,37 +110,57 @@ namespace Communicator_Backend.Models
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ContentLink)
-                    .HasColumnName("content_link")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.FileId).HasColumnName("file_id");
 
-                entity.Property(e => e.FromUserId).HasColumnName("from_user_id");
+                entity.Property(e => e.FromUser)
+                    .IsRequired()
+                    .HasColumnName("from_user")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.IsRead).HasColumnName("isread");
 
-                entity.Property(e => e.MessageType)
-                    .HasColumnName("message_type")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.MessageType).HasColumnName("message_type");
 
                 entity.Property(e => e.SendTime)
                     .HasColumnName("send_time")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.ToUserId).HasColumnName("to_user_id");
+                entity.Property(e => e.ToUser)
+                    .IsRequired()
+                    .HasColumnName("to_user")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.HasOne(d => d.FromUser)
-                    .WithMany(p => p.MessageFromUser)
-                    .HasForeignKey(d => d.FromUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__message__from_us__36B12243");
+                entity.HasOne(d => d.File)
+                    .WithMany(p => p.Message)
+                    .HasForeignKey(d => d.FileId)
+                    .HasConstraintName("FK__message__file_id__656C112C");
 
-                entity.HasOne(d => d.ToUser)
-                    .WithMany(p => p.MessageToUser)
-                    .HasForeignKey(d => d.ToUserId)
+                entity.HasOne(d => d.FromUserNavigation)
+                    .WithMany(p => p.MessageFromUserNavigation)
+                    .HasForeignKey(d => d.FromUser)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__message__to_user__37A5467C");
+                    .HasConstraintName("FK__message__from_us__6383C8BA");
+
+                entity.HasOne(d => d.ToUserNavigation)
+                    .WithMany(p => p.MessageToUserNavigation)
+                    .HasForeignKey(d => d.ToUser)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__message__to_user__6477ECF3");
+            });
+
+            modelBuilder.Entity<UserFile>(entity =>
+            {
+                entity.ToTable("user_file");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Path)
+                    .IsRequired()
+                    .HasColumnName("path")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

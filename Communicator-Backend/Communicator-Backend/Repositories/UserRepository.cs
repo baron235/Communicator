@@ -20,11 +20,6 @@ namespace Communicator_Backend.Repositories
             throw new NotImplementedException();
         }
 
-        public CommunicatorUser GetUser(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public CommunicatorUser GetUser(string login)
         {
             return this.context.CommunicatorUser.FirstOrDefault(u => u.Login == login);

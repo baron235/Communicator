@@ -8,9 +8,9 @@ namespace Communicator_Backend.Repositories
 {
     public interface IFriendshipRepository
     {
-        bool CheckFriends(int id1, int id2);
-        List<CommunicatorUser> GetFriends(int id);
-        void AddFriendship(int id1, int id2);
-        void DeleteFriendship(int id1, int id2);
+        bool CheckFriends(string login1, string login2);
+        List<CommunicatorUser> GetFriends(string login);
+        void AddFriendship(string login1, string login2);
+        void DeleteFriendship(string login1, string login2);
     }
 }
