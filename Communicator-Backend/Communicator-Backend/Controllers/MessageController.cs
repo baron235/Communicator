@@ -23,12 +23,12 @@ namespace Communicator_Backend.Controllers
 
         [HttpPost("add/{toUser}")]
         [Authorize]
-        public void SendMessage(string toUser, [FromBody]string contentMessage)
+        public IActionResult SendMessage(string toUser, [FromBody]string contentMessage)
         {
             var fromUser = this.HttpContext.User.Identity.Name;
             
-            var m = this.messageService.AddTextMessage(fromUser, toUser, contentMessage);
-
+            this.messageService.AddTextMessage(fromUser, toUser, contentMessage);
+            return Ok();
         }
     }
 }
