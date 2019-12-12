@@ -106,7 +106,7 @@ namespace Communicator_Backend.Models
 
                 entity.Property(e => e.FromUserId).HasColumnName("from_user_id");
 
-                entity.Property(e => e.Isread).HasColumnName("isread");
+                entity.Property(e => e.IsRead).HasColumnName("isread");
 
                 entity.Property(e => e.MessageType)
                     .HasColumnName("message_type")
