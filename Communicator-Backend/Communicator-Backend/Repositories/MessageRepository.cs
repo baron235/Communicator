@@ -28,5 +28,15 @@ namespace Communicator_Backend.Repositories
             this.context.Message.Add(m);
             this.context.SaveChanges();
         }
+
+        public List<Message> UnreadMessagesFrom(int userId, int touserId)
+        {
+            //todo
+        }
+
+        void MessageRead(List<int> ids)
+        {
+            //todo
+        }
     }
 }

@@ -11,5 +11,8 @@ namespace Communicator_Backend.Repositories
         CommunicatorUser FromWho(int id);
         string ContentMessage(CommunicatorUser from_user);
         void AddMessage(Message m);
+        List<Message> UnreadMessagesFrom(int userId, int touserId);
+
+        void MessageRead(List<int> ids);  
     }
 }
