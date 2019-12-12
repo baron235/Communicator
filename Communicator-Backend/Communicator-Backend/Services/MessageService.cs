@@ -25,10 +25,13 @@ namespace Communicator_Backend.Services
             
             var m = new Message();
             m.Content = text;
-            m.isRead = false;
-            m.FromUserId idFrom;
-            // TODO dokoncz jeszcze ToUserId, SendTime i message type :p
-            
+            m.IsRead = false;
+            m.FromUserId=idFrom;
+            m.ToUserId = idTo;
+            m.SendTime = DateTime.Now;
+            m.MessageType = text;
+
+            //do sprawdzenia
             this.messageRepository.AddMessage(m);
         }
     }
