@@ -30,5 +30,11 @@ namespace Communicator_Backend.Repositories
             this.context.Message.Where(m => ids.Contains(m.Id)).ToList().ForEach(m=>m.IsRead=true);
             this.context.SaveChanges();
         }
+
+        public List<string> GetUnreadLogins(string login)
+        {
+            var unreadList = this.context.Message.Where(m => m.ToUser == login && m.IsRead == false).Select(m=>m.FromUser).ToList();
+            return unreadList ;
+        }
     }
 }
