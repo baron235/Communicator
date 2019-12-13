@@ -17,7 +17,8 @@ namespace Communicator_Backend.Repositories
 
         public void AddUser(CommunicatorUser user)
         {
-            throw new NotImplementedException();
+            this.context.CommunicatorUser.Add(user);
+            this.context.SaveChanges();
         }
 
         public CommunicatorUser GetUser(string login)
@@ -27,7 +28,17 @@ namespace Communicator_Backend.Repositories
 
         public void ModifyUser(CommunicatorUser user)
         {
-            throw new NotImplementedException();
+            var userInDb = this.context.CommunicatorUser.FirstOrDefault(u => u.Login == user.Login);
+            if(userInDb == null)
+            {
+                throw new Exception();
+            }
+            userInDb.Status = user.Status;
+            userInDb.Password = user.Password;
+            userInDb.Avatar = user.Avatar;
+            userInDb.Name = user.Name;
+
+            this.context.SaveChanges();
         }
     }
 }

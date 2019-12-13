@@ -33,8 +33,8 @@ namespace Communicator_Backend.Repositories
 
         public List<string> GetUnreadLogins(string login)
         {
-            var unreadList = this.context.Message.Where(m => m.ToUser == login && m.IsRead == false).Select(m=>m.FromUser).ToList();
-            return unreadList ;
+            var unreadList = this.context.Message.Where(m => m.ToUser == login && m.IsRead == false).Select(m=>m.FromUser).Distinct().ToList();
+            return unreadList;
         }
     }
 }

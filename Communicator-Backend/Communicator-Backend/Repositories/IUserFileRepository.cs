@@ -8,7 +8,7 @@ namespace Communicator_Backend.Repositories
 {
     public interface IUserFileRepository
     {
-        void AddFile(UserFile file);
+        int AddFile(UserFile file);
         UserFile GetFile(int id);
 
     }

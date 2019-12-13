@@ -44,6 +44,8 @@ namespace Communicator_Backend
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IUserFileRepository, UserFileRepository>();
             services.AddControllers();
             ConfigureJwt(services);
         }

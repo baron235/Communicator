@@ -1,4 +1,5 @@
 ﻿using Communicator_Backend.Models;
+using Communicator_Backend.Models.JWT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Communicator_Backend.Services
     public interface IUserService
     {
         CommunicatorUser GetUser(string login);
+        void AddUser(UserIdentity login);
 
     }
 }
