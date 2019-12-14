@@ -10,7 +10,7 @@ namespace Communicator_Backend.Models
         public string ToUser { get; set; }
         public bool IsRead { get; set; }
         public string Content { get; set; }
-        public int? MessageType { get; set; }
+        public int MessageType { get; set; }
         public int? FileId { get; set; }
         public DateTime SendTime { get; set; }
 

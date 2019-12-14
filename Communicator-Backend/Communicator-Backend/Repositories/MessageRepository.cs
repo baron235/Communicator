@@ -36,5 +36,10 @@ namespace Communicator_Backend.Repositories
             var unreadList = this.context.Message.Where(m => m.ToUser == login && m.IsRead == false).Select(m=>m.FromUser).Distinct().ToList();
             return unreadList;
         }
+
+        public List<Message> AllMessagesFrom(string fromUser, string toUser)
+        {
+           return this.context.Message.Where(m => m.ToUser == toUser && m.FromUser == fromUser).ToList();
+        }
     }
 }

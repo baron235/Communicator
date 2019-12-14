@@ -1,4 +1,3 @@
-
 CREATE TABLE user_file(
     id INT PRIMARY KEY IDENTITY (1, 1),
 	path varchar(100) NOT NULL
@@ -8,8 +7,10 @@ CREATE TABLE communicator_user(
     login VARCHAR(50) PRIMARY KEY NOT NULL,
     password VARCHAR(50) NOT NULL,
     name VARCHAR(30) NOT NULL,
+	salt VARCHAR(50) NOT NULL,
 	avatar INT,
 	status VARCHAR(20),
+	isDarkTheme BIT NOT NULL,
     FOREIGN KEY (avatar) REFERENCES user_file (id)
 );
 
@@ -27,7 +28,7 @@ CREATE TABLE message(
     to_user VARCHAR(50) NOT NULL,
     isread BIT NOT NULL,
 	content VARCHAR(500),
-	message_type INT,
+	message_type INT NOT NULL,
 	file_id INT,
 	send_time DATETIME NOT NULL,
     FOREIGN KEY (from_user) REFERENCES communicator_user (login),

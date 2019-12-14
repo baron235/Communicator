@@ -16,8 +16,10 @@ namespace Communicator_Backend.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public string Name { get; set; }
+        public string Salt { get; set; }
         public int? Avatar { get; set; }
         public string Status { get; set; }
+        public bool IsDarkTheme { get; set; }
 
         public virtual UserFile AvatarNavigation { get; set; }
         public virtual ICollection<Friendship> FriendshipFriend1Navigation { get; set; }

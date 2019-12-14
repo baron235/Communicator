@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Communicator_Backend.DTOs;
 using Communicator_Backend.Models;
 using Communicator_Backend.Models.JWT;
 using Communicator_Backend.Repositories;
@@ -26,12 +27,15 @@ namespace Communicator_Backend.Services
             {
                 var user2 = new CommunicatorUser();
                 user2.Login = us.Login;
+                user2.Salt = Guid.NewGuid().ToString();
+                var toHash = $"{us.Password}{user2.Salt}";
 
                 string md5Password = string.Empty;
                 using (MD5 md5Hash = MD5.Create())
                 {
-                    md5Password = AuthService.GetMd5Hash(md5Hash, us.Password);
+                    md5Password = AuthService.GetMd5Hash(md5Hash, toHash);
                 }
+
 
                 user2.Password = md5Password;
                 user2.Name = us.Login;
@@ -43,9 +47,35 @@ namespace Communicator_Backend.Services
             }
         }
 
-        public CommunicatorUser GetUser(string login)
+        public UserDto GetUser(string login)
         {
-            return this.userRepository.GetUser(login);
+            var user= this.userRepository.GetUser(login);
+            if(user==null)
+            {
+                return null;
+            }
+
+            return new UserDto()
+                {
+                    Login = user.Login,
+                    Name = user.Name,
+                    Status = user.Status,
+                    Avatar = user.Avatar
+                };
+        }
+
+        public void SetAvatar(string login, int avatarId)
+        {
+            var user=this.userRepository.GetUser(login);
+            user.Avatar = avatarId;
+            this.userRepository.ModifyUser(user);
+        }
+
+        public void SetStatus(string login, string status)
+        {
+            var user = this.userRepository.GetUser(login);
+            user.Status = status;
+            this.userRepository.ModifyUser(user);
         }
     }
 }

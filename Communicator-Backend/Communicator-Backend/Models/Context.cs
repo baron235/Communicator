@@ -34,7 +34,7 @@ namespace Communicator_Backend.Models
             modelBuilder.Entity<CommunicatorUser>(entity =>
             {
                 entity.HasKey(e => e.Login)
-                    .HasName("PK__communic__7838F27381967C34");
+                    .HasName("PK__communic__7838F273CBDA82EA");
 
                 entity.ToTable("communicator_user");
 
@@ -44,6 +44,8 @@ namespace Communicator_Backend.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Avatar).HasColumnName("avatar");
+
+                entity.Property(e => e.IsDarkTheme).HasColumnName("isDarkTheme");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -57,6 +59,12 @@ namespace Communicator_Backend.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Salt)
+                    .IsRequired()
+                    .HasColumnName("salt")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Status)
                     .HasColumnName("status")
                     .HasMaxLength(20)
@@ -65,7 +73,7 @@ namespace Communicator_Backend.Models
                 entity.HasOne(d => d.AvatarNavigation)
                     .WithMany(p => p.CommunicatorUser)
                     .HasForeignKey(d => d.Avatar)
-                    .HasConstraintName("FK__communica__avata__5CD6CB2B");
+                    .HasConstraintName("FK__communica__avata__7F2BE32F");
             });
 
             modelBuilder.Entity<Friendship>(entity =>
@@ -90,13 +98,13 @@ namespace Communicator_Backend.Models
                     .WithMany(p => p.FriendshipFriend1Navigation)
                     .HasForeignKey(d => d.Friend1)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__friendshi__frien__5FB337D6");
+                    .HasConstraintName("FK__friendshi__frien__02084FDA");
 
                 entity.HasOne(d => d.Friend2Navigation)
                     .WithMany(p => p.FriendshipFriend2Navigation)
                     .HasForeignKey(d => d.Friend2)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__friendshi__frien__60A75C0F");
+                    .HasConstraintName("FK__friendshi__frien__02FC7413");
             });
 
             modelBuilder.Entity<Message>(entity =>
@@ -135,19 +143,19 @@ namespace Communicator_Backend.Models
                 entity.HasOne(d => d.File)
                     .WithMany(p => p.Message)
                     .HasForeignKey(d => d.FileId)
-                    .HasConstraintName("FK__message__file_id__656C112C");
+                    .HasConstraintName("FK__message__file_id__07C12930");
 
                 entity.HasOne(d => d.FromUserNavigation)
                     .WithMany(p => p.MessageFromUserNavigation)
                     .HasForeignKey(d => d.FromUser)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__message__from_us__6383C8BA");
+                    .HasConstraintName("FK__message__from_us__05D8E0BE");
 
                 entity.HasOne(d => d.ToUserNavigation)
                     .WithMany(p => p.MessageToUserNavigation)
                     .HasForeignKey(d => d.ToUser)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__message__to_user__6477ECF3");
+                    .HasConstraintName("FK__message__to_user__06CD04F7");
             });
 
             modelBuilder.Entity<UserFile>(entity =>

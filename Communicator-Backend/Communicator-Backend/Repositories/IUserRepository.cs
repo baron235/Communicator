@@ -11,5 +11,6 @@ namespace Communicator_Backend.Repositories
         void AddUser(CommunicatorUser user);
         CommunicatorUser GetUser(string login);
         void ModifyUser(CommunicatorUser user);
+
     }
 }

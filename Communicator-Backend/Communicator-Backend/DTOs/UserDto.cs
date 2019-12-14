@@ -10,5 +10,6 @@ namespace Communicator_Backend.DTOs
         public string Login { get; set; }
         public string Name { get; set; }
         public string Status { get; set; }
+        public int? Avatar { get; set; }
     }
 }

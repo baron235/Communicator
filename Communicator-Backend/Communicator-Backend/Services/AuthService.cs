@@ -31,10 +31,12 @@ namespace Communicator_Backend.Services
                 throw new KeyNotFoundException();
             }
 
+            var toHash = $"{identity.Password}{user.Salt}";
+
             string md5Password = string.Empty;
             using (MD5 md5Hash = MD5.Create())
             {
-                md5Password = GetMd5Hash(md5Hash, identity.Password);
+                md5Password = GetMd5Hash(md5Hash, toHash);
             }
 
             if (user.Password.ToLower() == md5Password.ToLower())

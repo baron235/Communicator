@@ -44,21 +44,28 @@ namespace Communicator_Backend.Controllers
         {
             const string basePath = @"C:/server/files";
 
-            if (file.Length > 0)
+            if (file == null || file.Length <= 0)
             {
-                var directoryName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-                var directoryPath = Path.Combine(basePath, directoryName);
-                Directory.CreateDirectory(directoryPath);
-                var filePath = Path.Combine(directoryPath, file.FileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-                var id = this.fileService.AddFile(filePath);
-                return Ok(id);
+                return BadRequest("No file.");
             }
-            return BadRequest();
+
+            if (file.Length > (10 * 1024 * 1024))
+            {
+                return BadRequest("File's too large");
+            }
+
+            var directoryName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            var directoryPath = Path.Combine(basePath, directoryName);
+            Directory.CreateDirectory(directoryPath);
+            var filePath = Path.Combine(directoryPath, file.FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            var id = this.fileService.AddFile(filePath);
+            return Ok(id);
+
         }
     }
 }

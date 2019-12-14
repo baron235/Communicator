@@ -49,7 +49,8 @@ namespace Communicator_Backend.Services
                 {
                     Login = u.Login,
                     Name = u.Name,
-                    Status = u.Status
+                    Status = u.Status,
+                    Avatar=u.Avatar
                 }).ToList();
         }
     }

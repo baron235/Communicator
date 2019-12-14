@@ -10,6 +10,7 @@ namespace Communicator_Backend.Repositories
     {
         void AddMessage(Message m);
         List<Message> UnreadMessagesFrom(string fromUser, string toUser);
+        List<Message> AllMessagesFrom(string fromUser, string toUser);
         void MessageRead(List<int> ids);
         List<string> GetUnreadLogins(string login);
     }

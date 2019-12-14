@@ -13,6 +13,6 @@ namespace Communicator_Backend.DTOs
         public string Content { get; set; }
         public DateTime SendDate { get; set; }
         public MessageType MessageType { get; set; }
-        public int FileId { get; set; }
+        public int? FileId { get; set; }
     }
 }
